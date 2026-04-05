@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── DARK MODE (default) ── */
+:root {
+  --bg:      #040608;
+  --bg1:     #080b10;
+  --bg2:     #0e1218;
+  --bg3:     #141a22;
+  --text:    #f0ede8;
+  --text2:   #9e9b95;
+  --text3:   #4a4844;
+  --border:  rgba(201,168,76,0.15);
+  --border2: rgba(201,168,76,0.30);
+  --card:    rgba(8,11,16,0.85);
+  --nav:     rgba(4,6,8,0.72);
+  --input:   #0e1218;
+  --row-hover: #141a22;
+  --row-odd:   rgba(8,11,16,0.70);
+  --shadow:  rgba(0,0,0,0.6);
+}
+
+/* ── LIGHT MODE ── */
+:root.light {
+  --bg:      #f0f4fa;
+  --bg1:     #e8eef8;
+  --bg2:     #dce5f5;
+  --bg3:     #cfd9ed;
+  --text:    #111827;
+  --text2:   #374151;
+  --text3:   #6b7280;
+  --border:  rgba(7,53,144,0.15);
+  --border2: rgba(7,53,144,0.30);
+  --card:    rgba(255,255,255,0.88);
+  --nav:     rgba(240,244,250,0.88);
+  --input:   #ffffff;
+  --row-hover: #e8eef8;
+  --row-odd:   rgba(255,255,255,0.70);
+  --shadow:  rgba(7,53,144,0.12);
+}
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+    transition: background 0.35s ease, color 0.35s ease;
+  }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c9a84c; border-radius: 2px; }
+}
+
+@layer utilities {
+  /* Text gradient */
+  .text-gradient-gold {
+    background: linear-gradient(90deg, #c9a84c, #f5e6b0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Theme-aware utilities */
+  .bg-theme        { background: var(--bg); }
+  .bg-theme1       { background: var(--bg1); }
+  .bg-theme2       { background: var(--bg2); }
+  .bg-theme3       { background: var(--bg3); }
+  .text-theme      { color: var(--text); }
+  .text-theme2     { color: var(--text2); }
+  .text-theme3     { color: var(--text3); }
+  .border-theme    { border-color: var(--border); }
+  .border-theme2   { border-color: var(--border2); }
+  .bg-card         { background: var(--card); backdrop-filter: blur(20px); }
+  .bg-nav          { background: var(--nav); }
+
+  /* Legacy aliases */
+  .border-gold-faint { border-color: var(--border); }
+  .border-gold-mid   { border-color: var(--border2); }
+  .bg-ink-glass      { background: var(--card); backdrop-filter: blur(20px); }
+  .bg-ink  { background: var(--bg); }
+  .bg-ink1 { background: var(--bg1); }
+  .bg-ink2 { background: var(--bg2); }
+  .bg-ink3 { background: var(--bg3); }
+  .text-text2 { color: var(--text2); }
+  .text-text3 { color: var(--text3); }
+}
+
+/* ── Custom cursor ── */
+#cursor {
+  position: fixed; width: 12px; height: 12px;
+  border: 1.5px solid #c9a84c; border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.12s;
+}
+#cursor.hover { transform: scale(2.5); }
+
+/* ── Nav link underline ── */
+.nav-link-line::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: #c9a84c; transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.nav-link-line:hover::after,
+.nav-link-line.active::after { transform: scaleX(1); }
+
+/* ── Scroll fade ── */
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.visible { opacity: 1; transform: none; }
+
+/* ── Ticker ── */
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.ticker-track { animation: ticker 32s linear infinite; }
+
+/* ── Scroll hint ── */
+@keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+.scroll-line { animation: scrollPulse 2s ease-in-out infinite; }
+
+/* ── Live dot ── */
+@keyframes livePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+.live-dot { animation: livePulse 1.4s ease-in-out infinite; }
+
+/* ── Star twinkle ── */
+@keyframes twinkle { 0%,100%{opacity:0.1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
+
+/* ── Light mode overrides for specific elements ── */
+:root.light .ticker-track span { color: var(--text2); }
+:root.light .stat-card         { background: var(--card); }
+:root.light nav                { border-bottom-color: rgba(7,53,144,0.12); }
+
+/* ── Mobile menu ── */
+.mobile-menu {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--nav);
+  backdrop-filter: blur(24px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2rem;
+}
+
+/* ── Input light mode ── */
+:root.light input,
+:root.light select,
+:root.light textarea {
+  background: var(--input) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+:root.light input::placeholder { color: var(--text3) !important; }
